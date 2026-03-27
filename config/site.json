@@ -1,0 +1,9 @@
+{
+  "siteName": "ai-coding-notes",
+  "activeTemplate": "default",
+  "availableTemplates": ["default", "minimal"],
+  "contentRoot": "content",
+  "postsRoot": "content/posts",
+  "pagesRoot": "content/pages",
+  "sharedAssetsRoot": "content/shared-assets"
+}
