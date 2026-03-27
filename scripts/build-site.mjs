@@ -319,6 +319,13 @@ function renderMarkdown(markdown, context) {
 
 function renderInline(text, context) {
   let result = escapeHtml(text);
+  const inlineCodeTokens = [];
+
+  result = result.replace(/`([^`]+)`/g, (_, code) => {
+    const token = `__INLINE_CODE_${inlineCodeTokens.length}__`;
+    inlineCodeTokens.push(`<code>${code}</code>`);
+    return token;
+  });
 
   result = result.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, url) => {
     return `<img src="${resolveAssetUrl(url, context)}" alt="${escapeHtml(alt)}">`;
@@ -341,9 +348,12 @@ function renderInline(text, context) {
     return `<a href="${resolved}">${escapeHtml(label)}</a>`;
   });
 
-  result = result.replace(/`([^`]+)`/g, '<code>$1</code>');
   result = result.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   result = result.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+
+  result = result.replace(/__INLINE_CODE_(\d+)__/g, (_, index) => {
+    return inlineCodeTokens[Number(index)] || '';
+  });
 
   return result;
 }
