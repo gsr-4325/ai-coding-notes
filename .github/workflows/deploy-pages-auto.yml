@@ -1,0 +1,82 @@
+name: Auto Build and Deploy GitHub Pages
+
+on:
+  repository_dispatch:
+    types:
+      - notes_drafts_published_updated
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-auto
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout site repo
+        uses: actions/checkout@v4
+
+      - name: Checkout notes-drafts
+        uses: actions/checkout@v4
+        with:
+          repository: gsr-4325/notes-drafts
+          ref: master
+          token: ${{ secrets.NOTES_DRAFTS_ACCESS_TOKEN }}
+          path: notes-drafts
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build static site
+        env:
+          NOTES_DRAFTS_PUBLISHED_DIR: notes-drafts/ai-coding-notes/published
+          NOTES_DRAFTS_SHARED_ASSETS_DIR: notes-drafts/ai-coding-notes/shared-assets
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/build-site.mjs
+
+      - name: Prepare Pages artifact
+        run: |
+          rm -rf public
+          mkdir -p public
+
+          cp content/index.html public/index.html
+
+          if [ -d content/posts ]; then
+            cp -R content/posts public/posts
+          fi
+
+          if [ -d content/shared-assets ]; then
+            cp -R content/shared-assets public/shared-assets
+          fi
+
+          if [ -d content/pages ]; then
+            mkdir -p public/pages
+            cp -R content/pages/. public/pages/
+          fi
+
+          cp -R templates public/templates
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
