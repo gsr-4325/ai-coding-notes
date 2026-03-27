@@ -12,11 +12,20 @@ concurrency:
   group: pages
   cancel-in-progress: true
 
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout notes-drafts
+        uses: actions/checkout@v4
+        with:
+          repository: gsr-4325/notes-drafts
+          ref: master
+          token: ${{ secrets.NOTES_DRAFTS_ACCESS_TOKEN }}
+          path: notes-drafts
+    
       - name: Checkout site repo
         uses: actions/checkout@v4
 
