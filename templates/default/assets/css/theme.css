@@ -1,0 +1,12 @@
+main {
+  padding-bottom: 48px;
+}
+
+.article-body > :first-child {
+  margin-top: 0;
+}
+
+.article-body a {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}

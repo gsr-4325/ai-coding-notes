@@ -1,0 +1,10 @@
+.site-shell {
+  max-width: 680px;
+  margin: 0 auto;
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+body {
+  background: #ffffff;
+}

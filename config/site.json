@@ -1,9 +1,1 @@
-{
-  "siteName": "ai-coding-notes",
-  "activeTemplate": "default",
-  "availableTemplates": ["default", "minimal"],
-  "contentRoot": "content",
-  "postsRoot": "content/posts",
-  "pagesRoot": "content/pages",
-  "sharedAssetsRoot": "content/shared-assets"
-}
+{"siteName":"AI Coding Notes","siteDescription":"AI coding notes site","contentRoot":"content","postsRoot":"content/posts","pagesRoot":"content/pages","sharedAssetsRoot":"content/shared-assets","activeTemplate":"default","availableTemplates":["default","minimal"],"renderMode":"build-time-static-html","linkSyntax":["[[slug]]","[[slug|label]]"],"postUrlPattern":"/posts/{slug}/"}
