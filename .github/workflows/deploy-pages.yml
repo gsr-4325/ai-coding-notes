@@ -18,22 +18,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout site repo
+        uses: actions/checkout@v4
+    
       - name: Checkout notes-drafts
         uses: actions/checkout@v4
         with:
           repository: gsr-4325/notes-drafts
           ref: master
           token: ${{ secrets.NOTES_DRAFTS_ACCESS_TOKEN }}
-          path: notes-drafts
-    
-      - name: Checkout site repo
-        uses: actions/checkout@v4
-
-      - name: Checkout notes-drafts
-        uses: actions/checkout@v4
-        with:
-          repository: gsr-4325/notes-drafts
-          ref: master
           path: notes-drafts
 
       - name: Setup Node.js
